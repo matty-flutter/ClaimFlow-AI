@@ -6,12 +6,16 @@ import 'nav.dart';
 /// Main entry point for the application
 ///
 /// This sets up:
-/// - Provider state management (ThemeProvider, CounterProvider)
+/// - Provider state management (ThemeProvider)
 /// - go_router navigation
-/// - Material 3 theming with light/dark modes
+/// - Material 3 theming with light/dark modes and persistent user preference
 void main() {
-  // Initialize the app
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => ThemeProvider(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -19,13 +23,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      title: 'ClaimFlow AI',
-      debugShowCheckedModeBanner: false,
-      theme: lightTheme,
-      darkTheme: darkTheme,
-      themeMode: ThemeMode.dark,
-      routerConfig: AppRouter.router,
+    return Consumer<ThemeProvider>(
+      builder: (context, themeProvider, _) {
+        return MaterialApp.router(
+          title: 'ClaimFlow AI',
+          debugShowCheckedModeBanner: false,
+          theme: lightTheme,
+          darkTheme: darkTheme,
+          themeMode: themeProvider.themeMode,
+          routerConfig: AppRouter.router,
+        );
+      },
     );
   }
 }

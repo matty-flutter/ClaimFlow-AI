@@ -1,5 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+/// ThemeProvider manages theme mode (light/dark) with persistent storage
+class ThemeProvider extends ChangeNotifier {
+  static const String _themeKey = 'theme_mode';
+  ThemeMode _themeMode = ThemeMode.dark;
+
+  ThemeProvider() {
+    _loadTheme();
+  }
+
+  ThemeMode get themeMode => _themeMode;
+  bool get isDarkMode => _themeMode == ThemeMode.dark;
+
+  Future<void> _loadTheme() async {
+    final prefs = await SharedPreferences.getInstance();
+    final savedTheme = prefs.getString(_themeKey) ?? 'dark';
+    _themeMode = savedTheme == 'light' ? ThemeMode.light : ThemeMode.dark;
+    notifyListeners();
+  }
+
+  Future<void> setThemeMode(ThemeMode mode) async {
+    _themeMode = mode;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_themeKey, mode == ThemeMode.light ? 'light' : 'dark');
+    notifyListeners();
+  }
+
+  void toggleTheme() {
+    setThemeMode(_themeMode == ThemeMode.light ? ThemeMode.dark : ThemeMode.light);
+  }
+}
 
 class AppSpacing {
   static const double xs = 4.0;
@@ -123,6 +155,44 @@ ThemeData get lightTheme => ThemeData(
   ),
   brightness: Brightness.light,
   scaffoldBackgroundColor: const Color(0xFFF8FAFC),
+  appBarTheme: const AppBarTheme(
+    backgroundColor: Colors.transparent,
+    foregroundColor: Color(0xFF0F172A),
+    elevation: 0,
+    scrolledUnderElevation: 0,
+  ),
+  cardTheme: CardThemeData(
+    elevation: 0,
+    color: Colors.white,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(AppRadius.lg),
+      side: const BorderSide(
+        color: Color(0xFFE2E8F0),
+        width: 1,
+      ),
+    ),
+  ),
+  elevatedButtonTheme: ElevatedButtonThemeData(
+    style: ElevatedButton.styleFrom(
+      backgroundColor: AppColors.primary,
+      foregroundColor: Colors.white,
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(AppRadius.md),
+      ),
+      elevation: 0,
+    ),
+  ),
+  outlinedButtonTheme: OutlinedButtonThemeData(
+    style: OutlinedButton.styleFrom(
+      foregroundColor: const Color(0xFF0F172A),
+      side: const BorderSide(color: Color(0xFFCBD5E1)),
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(AppRadius.md),
+      ),
+    ),
+  ),
   textTheme: _buildTextTheme(Brightness.light),
 );
 

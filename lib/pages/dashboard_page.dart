@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:claimflow_ai/theme.dart';
 import 'package:claimflow_ai/components/glass_card.dart';
 import 'package:claimflow_ai/components/stat_card.dart';
@@ -76,11 +77,32 @@ class _DashboardPageState extends State<DashboardPage> {
                           child: Text(
                             'ClaimFlow AI',
                             style: context.textStyles.headlineMedium?.copyWith(
-                              color: AppColors.textPrimary,
+                              color: Theme.of(context).brightness == Brightness.dark 
+                                ? AppColors.textPrimary 
+                                : const Color(0xFF0F172A),
                               fontWeight: FontWeight.w700,
                             ),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: () => context.read<ThemeProvider>().toggleTheme(),
+                          icon: Icon(
+                            context.watch<ThemeProvider>().isDarkMode 
+                              ? Icons.light_mode 
+                              : Icons.dark_mode,
+                          ),
+                          tooltip: context.watch<ThemeProvider>().isDarkMode 
+                            ? 'Switch to Light Mode' 
+                            : 'Switch to Dark Mode',
+                          style: IconButton.styleFrom(
+                            backgroundColor: Theme.of(context).brightness == Brightness.dark
+                              ? AppColors.surfaceElevated
+                              : Colors.white,
+                            foregroundColor: Theme.of(context).brightness == Brightness.dark
+                              ? AppColors.textPrimary
+                              : const Color(0xFF0F172A),
                           ),
                         ),
                       ],
@@ -89,14 +111,16 @@ class _DashboardPageState extends State<DashboardPage> {
                     Text(
                       'Enterprise Claims Intelligence',
                       style: context.textStyles.bodyMedium?.copyWith(
-                        color: AppColors.textSecondary,
+                        color: Theme.of(context).brightness == Brightness.dark
+                          ? AppColors.textSecondary
+                          : const Color(0xFF64748B),
                       ),
                     ),
                     const SizedBox(height: 24),
                     Text(
                       'Key Metrics',
                       style: context.textStyles.titleLarge?.copyWith(
-                        color: AppColors.textPrimary,
+                        color: Theme.of(context).colorScheme.onSurface,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -168,7 +192,7 @@ class _DashboardPageState extends State<DashboardPage> {
                     Text(
                       'Claims by Type',
                       style: context.textStyles.titleLarge?.copyWith(
-                        color: AppColors.textPrimary,
+                        color: Theme.of(context).colorScheme.onSurface,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -188,7 +212,7 @@ class _DashboardPageState extends State<DashboardPage> {
                           child: Text(
                             'Recent Claims',
                             style: context.textStyles.titleLarge?.copyWith(
-                              color: AppColors.textPrimary,
+                              color: Theme.of(context).colorScheme.onSurface,
                               fontWeight: FontWeight.w600,
                             ),
                             maxLines: 1,
@@ -200,7 +224,7 @@ class _DashboardPageState extends State<DashboardPage> {
                           child: Text(
                             'View All',
                             style: context.textStyles.bodyMedium?.copyWith(
-                              color: AppColors.primary,
+                              color: Theme.of(context).colorScheme.primary,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
@@ -254,7 +278,9 @@ class ClaimTypeChart extends StatelessWidget {
         child: Text(
           'No data available',
           style: context.textStyles.bodyMedium?.copyWith(
-            color: AppColors.textSecondary,
+            color: Theme.of(context).brightness == Brightness.dark
+              ? AppColors.textSecondary
+              : const Color(0xFF64748B),
           ),
         ),
       );
@@ -382,26 +408,32 @@ class ClaimTypeChart extends StatelessWidget {
   }
 
   Widget _buildLegendChip(Color color, String label, int value) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Container(
-          width: 8,
-          height: 8,
-          decoration: BoxDecoration(
-            color: color,
-            borderRadius: BorderRadius.circular(2),
-          ),
-        ),
-        const SizedBox(width: 4),
-        Text(
-          '$label ($value)',
-          style: const TextStyle(
-            color: AppColors.textSecondary,
-            fontSize: 10,
-          ),
-        ),
-      ],
+    return Builder(
+      builder: (context) {
+        return Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 8,
+              height: 8,
+              decoration: BoxDecoration(
+                color: color,
+                borderRadius: BorderRadius.circular(2),
+              ),
+            ),
+            const SizedBox(width: 4),
+            Text(
+              '$label ($value)',
+              style: TextStyle(
+                color: Theme.of(context).brightness == Brightness.dark
+                  ? AppColors.textSecondary
+                  : const Color(0xFF64748B),
+                fontSize: 10,
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }
@@ -435,7 +467,9 @@ class LegendItem extends StatelessWidget {
           child: Text(
             label,
             style: context.textStyles.bodySmall?.copyWith(
-              color: AppColors.textSecondary,
+              color: Theme.of(context).brightness == Brightness.dark
+                ? AppColors.textSecondary
+                : const Color(0xFF64748B),
             ),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
@@ -444,7 +478,7 @@ class LegendItem extends StatelessWidget {
         Text(
           value,
           style: context.textStyles.bodySmall?.copyWith(
-            color: AppColors.textPrimary,
+            color: Theme.of(context).colorScheme.onSurface,
             fontWeight: FontWeight.w600,
           ),
         ),

@@ -45,15 +45,19 @@ class ClaimCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final statusColor = _getStatusColor();
     final formatter = NumberFormat.currency(symbol: '\$', decimalDigits: 0);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return GestureDetector(
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: AppColors.surface,
+          color: isDark ? AppColors.surface : Colors.white,
           borderRadius: BorderRadius.circular(AppRadius.lg),
-          border: Border.all(color: AppColors.border, width: 1),
+          border: Border.all(
+            color: isDark ? AppColors.border : const Color(0xFFE2E8F0),
+            width: 1,
+          ),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -81,7 +85,7 @@ class ClaimCard extends StatelessWidget {
                       Text(
                         claim.claimNumber,
                         style: context.textStyles.titleMedium?.copyWith(
-                          color: AppColors.textPrimary,
+                          color: Theme.of(context).colorScheme.onSurface,
                           fontWeight: FontWeight.w600,
                         ),
                         maxLines: 1,
@@ -91,7 +95,7 @@ class ClaimCard extends StatelessWidget {
                       Text(
                         claim.claimant.name,
                         style: context.textStyles.bodySmall?.copyWith(
-                          color: AppColors.textSecondary,
+                          color: isDark ? AppColors.textSecondary : const Color(0xFF64748B),
                         ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
@@ -125,7 +129,7 @@ class ClaimCard extends StatelessWidget {
             Text(
               claim.description,
               style: context.textStyles.bodyMedium?.copyWith(
-                color: AppColors.textSecondary,
+                color: isDark ? AppColors.textSecondary : const Color(0xFF64748B),
               ),
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
@@ -133,13 +137,17 @@ class ClaimCard extends StatelessWidget {
             const SizedBox(height: 12),
             Row(
               children: [
-                Icon(Icons.attach_money, size: 14, color: AppColors.textTertiary),
+                Icon(
+                  Icons.attach_money,
+                  size: 14,
+                  color: isDark ? AppColors.textTertiary : const Color(0xFF94A3B8),
+                ),
                 const SizedBox(width: 2),
                 Flexible(
                   child: Text(
                     formatter.format(claim.amount),
                     style: context.textStyles.titleSmall?.copyWith(
-                      color: AppColors.textPrimary,
+                      color: Theme.of(context).colorScheme.onSurface,
                       fontWeight: FontWeight.w600,
                     ),
                     maxLines: 1,
@@ -168,7 +176,11 @@ class ClaimCard extends StatelessWidget {
                   ),
                 ],
                 const Spacer(),
-                Icon(Icons.arrow_forward_ios, size: 12, color: AppColors.textTertiary),
+                Icon(
+                  Icons.arrow_forward_ios,
+                  size: 12,
+                  color: isDark ? AppColors.textTertiary : const Color(0xFF94A3B8),
+                ),
               ],
             ),
           ],

@@ -27,6 +27,7 @@ class StatCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Material(
       color: Colors.transparent,
       child: InkWell(
@@ -35,9 +36,12 @@ class StatCard extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.all(14),
           decoration: BoxDecoration(
-            color: backgroundColor ?? AppColors.surface,
+            color: backgroundColor ?? (isDark ? AppColors.surface : Colors.white),
             borderRadius: BorderRadius.circular(AppRadius.lg),
-            border: Border.all(color: AppColors.border, width: 1),
+            border: Border.all(
+              color: isDark ? AppColors.border : const Color(0xFFE2E8F0),
+              width: 1,
+            ),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -98,7 +102,7 @@ class StatCard extends StatelessWidget {
                 child: Text(
                   value,
                   style: context.textStyles.headlineMedium?.copyWith(
-                    color: AppColors.textPrimary,
+                    color: Theme.of(context).colorScheme.onSurface,
                     fontWeight: FontWeight.w700,
                     fontSize: 22,
                   ),
@@ -109,7 +113,7 @@ class StatCard extends StatelessWidget {
               Text(
                 title,
                 style: context.textStyles.bodySmall?.copyWith(
-                  color: AppColors.textSecondary,
+                  color: isDark ? AppColors.textSecondary : const Color(0xFF64748B),
                   fontSize: 12,
                 ),
                 maxLines: 1,
@@ -120,7 +124,7 @@ class StatCard extends StatelessWidget {
                 Text(
                   subtitle!,
                   style: context.textStyles.bodySmall?.copyWith(
-                    color: AppColors.textTertiary,
+                    color: isDark ? AppColors.textTertiary : const Color(0xFF94A3B8),
                     fontSize: 10,
                   ),
                   maxLines: 1,
