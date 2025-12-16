@@ -42,9 +42,15 @@ class _DashboardPageState extends State<DashboardPage> {
     }
 
     final totalClaims = _claims.length;
-    final avgAmount = _claims.isEmpty ? 0.0 : _claims.map((c) => c.amount).reduce((a, b) => a + b) / _claims.length;
-    final highRiskClaims = _claims.where((c) => (c.fraudScore ?? 0) > 0.5).length;
-    final pendingClaims = _claims.where((c) => c.status == 'Under Review' || c.status == 'Pending Documents').length;
+    final avgAmount = _claims.isEmpty
+        ? 0.0
+        : _claims.map((c) => c.amount).reduce((a, b) => a + b) / _claims.length;
+    final highRiskClaims =
+        _claims.where((c) => (c.fraudScore ?? 0) > 0.5).length;
+    final pendingClaims = _claims
+        .where((c) =>
+            c.status == 'Under Review' || c.status == 'Pending Documents')
+        .length;
 
     return Scaffold(
       body: SafeArea(
@@ -69,12 +75,13 @@ class _DashboardPageState extends State<DashboardPage> {
                             ),
                             borderRadius: BorderRadius.circular(AppRadius.md),
                           ),
-                          child: const Icon(Icons.auto_awesome, color: Colors.white, size: 22),
+                          child: const Icon(Icons.auto_awesome,
+                              color: Colors.white, size: 22),
                         ),
                         const SizedBox(width: 12),
                         Expanded(
                           child: Text(
-                            'ClaimFlow AI',
+                            'ClaimFlow AI demo',
                             style: context.textStyles.headlineMedium?.copyWith(
                               color: AppColors.textPrimary,
                               fontWeight: FontWeight.w700,
@@ -125,7 +132,8 @@ class _DashboardPageState extends State<DashboardPage> {
                               width: cardWidth,
                               child: StatCard(
                                 title: 'Average Amount',
-                                value: '\$${NumberFormat.compact().format(avgAmount)}',
+                                value:
+                                    '\$${NumberFormat.compact().format(avgAmount)}',
                                 subtitle: 'Per claim',
                                 icon: Icons.attach_money,
                                 iconColor: AppColors.accent,
@@ -221,7 +229,8 @@ class _DashboardPageState extends State<DashboardPage> {
                       padding: const EdgeInsets.only(bottom: 12),
                       child: ClaimCard(
                         claim: _claims[index],
-                        onTap: () => context.push('/claim/${_claims[index].id}'),
+                        onTap: () =>
+                            context.push('/claim/${_claims[index].id}'),
                       ),
                     );
                   },
@@ -263,7 +272,7 @@ class ClaimTypeChart extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         final isNarrow = constraints.maxWidth < 280;
-        
+
         if (isNarrow) {
           return Column(
             children: [
@@ -272,7 +281,8 @@ class ClaimTypeChart extends StatelessWidget {
                   PieChartData(
                     sectionsSpace: 2,
                     centerSpaceRadius: 35,
-                    sections: _buildSections(context, autoClaims, propertyClaims, healthClaims, total, 45),
+                    sections: _buildSections(context, autoClaims,
+                        propertyClaims, healthClaims, total, 45),
                   ),
                 ),
               ),
@@ -282,7 +292,8 @@ class ClaimTypeChart extends StatelessWidget {
                 children: [
                   _buildLegendChip(AppColors.chartBlue, 'Auto', autoClaims),
                   const SizedBox(width: 12),
-                  _buildLegendChip(AppColors.chartPurple, 'Property', propertyClaims),
+                  _buildLegendChip(
+                      AppColors.chartPurple, 'Property', propertyClaims),
                   const SizedBox(width: 12),
                   _buildLegendChip(AppColors.chartPink, 'Health', healthClaims),
                 ],
@@ -299,7 +310,8 @@ class ClaimTypeChart extends StatelessWidget {
                 PieChartData(
                   sectionsSpace: 2,
                   centerSpaceRadius: 40,
-                  sections: _buildSections(context, autoClaims, propertyClaims, healthClaims, total, 50),
+                  sections: _buildSections(context, autoClaims, propertyClaims,
+                      healthClaims, total, 50),
                 ),
               ),
             ),
