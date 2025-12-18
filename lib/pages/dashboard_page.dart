@@ -75,7 +75,7 @@ class _DashboardPageState extends State<DashboardPage> {
                         const SizedBox(width: 12),
                         Expanded(
                           child: Text(
-                            'ClaimFlow AI',
+                            'ClaimFlow AI demo',
                             style: context.textStyles.headlineMedium?.copyWith(
                               color: Theme.of(context).brightness == Brightness.dark 
                                 ? AppColors.textPrimary 
