@@ -30,6 +30,28 @@ class GlassCard extends StatelessWidget {
                 width: 1,
               )
             : null,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.blue.withValues(alpha: 0.3),
+            blurRadius: 20,
+            offset: const Offset(-8, -8),
+          ),
+          BoxShadow(
+            color: Colors.purple.withValues(alpha: 0.3),
+            blurRadius: 20,
+            offset: const Offset(8, -8),
+          ),
+          BoxShadow(
+            color: Colors.pink.withValues(alpha: 0.3),
+            blurRadius: 20,
+            offset: const Offset(8, 8),
+          ),
+          BoxShadow(
+            color: Colors.blue.withValues(alpha: 0.2),
+            blurRadius: 20,
+            offset: const Offset(-8, 8),
+          ),
+        ],
       ),
       child: child,
     );
